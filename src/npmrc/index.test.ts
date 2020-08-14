@@ -9,7 +9,7 @@ describe('vsts-npm-auth', () => {
     })
 
     expect(content).toStrictEqual(
-      `registry=https://example.com\n_authToken=123\nalways-auth=false`
+      `registry=https://example.com\nauthToken=123\nalways-auth=false`
     )
   })
 })
