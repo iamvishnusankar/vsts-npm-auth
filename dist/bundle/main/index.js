@@ -692,7 +692,7 @@ class ExecState extends events.EventEmitter {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNpmrcContent = void 0;
 exports.getNpmrcContent = (config) => {
-    return `registry=${config.registry}\nauthToken=${config.authToken}\nalways-auth=${config.alwaysAuth}`;
+    return `registry=${config.registry}\n_authToken=${config.authToken}\nalways-auth=${config.alwaysAuth}`;
 };
 
 
