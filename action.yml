@@ -12,4 +12,4 @@ inputs:
 runs:
   using: 'node12'
   main: 'dist/bundle/main/index.js'
-  clean: 'dist/bundle/cleanup/index.js'
+  post: 'dist/bundle/cleanup/index.js'
