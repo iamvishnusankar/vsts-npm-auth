@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import { getNpmrcContent } from './npmrc'
 import { INpmRcConfig } from './inteface'
-import { createFile } from './create-file'
+import { createFile } from './file'
 import { getYarnrcContent } from './yarnrc'
 
 const run = async () => {
