@@ -1,8 +1,8 @@
 {
-  "name": "fullstack-template",
+  "name": "vsts-npm-auth",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "repository": "https://github.com/iamvishnusankar/fullstack-template.git",
+  "repository": "https://github.com/iamvishnusankar/vsts-npm-auth.git",
   "author": "Vishnu Sankar",
   "license": "MIT",
   "private": true,
