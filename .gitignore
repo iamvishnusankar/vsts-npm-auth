@@ -65,4 +65,4 @@ typings/
 .npmrc
 junit.xml
 dist/**/*.js
-!dist/bundle/*
+!dist/bundle/**/*.js

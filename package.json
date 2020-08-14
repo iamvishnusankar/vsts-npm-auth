@@ -1,7 +1,7 @@
 {
   "name": "vsts-npm-auth",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/bundle/main.js",
   "repository": "https://github.com/iamvishnusankar/vsts-npm-auth.git",
   "author": "Vishnu Sankar",
   "license": "MIT",
@@ -14,7 +14,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "postbuild": "ncc build dist/index.js -o dist/bundle",
+    "postbuild": "yarn build:main && yarn build:cleanup",
+    "build:main": "ncc build dist/main.js -o dist/bundle/main",
+    "build:cleanup": "ncc build dist/cleanup.js -o dist/bundle/cleanup",
     "clean:tsc": "tsc --build --clean",
     "dev:docker": "docker-compose up -d",
     "dev:test": "jest --watchAll",

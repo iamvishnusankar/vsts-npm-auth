@@ -11,4 +11,5 @@ inputs:
     default: true
 runs:
   using: 'node12'
-  main: 'dist/bundle/index.js'
+  main: 'dist/bundle/main/index.js'
+  clean: 'dist/bundle/cleanup/index.js'
