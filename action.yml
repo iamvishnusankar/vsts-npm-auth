@@ -4,6 +4,8 @@ author: 'iamvishnusankar'
 inputs:
   registry:
     deacription: 'VSTS private feed registry'
+  npm-token:
+    deacription: 'VSTS PAT'
   always-auth:
     description: 'Set always-auth in npmrc'
     default: true
