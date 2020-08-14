@@ -62,3 +62,7 @@ typings/
 
 # Custom
 .DS_Store
+.npmrc
+junit.xml
+dist/**/*.js
+!dist/bundle/**/*.js

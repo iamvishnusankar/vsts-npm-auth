@@ -1,4 +1,9 @@
 {
-  "files": [],
-  "references": []
+  "extends": "@corex/tsconfig",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": false,
+    "module": "CommonJS"
+  }
 }

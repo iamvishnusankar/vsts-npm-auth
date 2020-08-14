@@ -1,0 +1,15 @@
+name: 'Setup VSTS Feed'
+description: 'Setup a VSTS Feed and authenticate'
+author: 'iamvishnusankar'
+inputs:
+  registry:
+    deacription: 'VSTS private feed registry'
+  npm-token:
+    deacription: 'VSTS PAT'
+  always-auth:
+    description: 'Set always-auth in npmrc'
+    default: true
+runs:
+  using: 'node12'
+  main: 'dist/bundle/main/index.js'
+  post: 'dist/bundle/cleanup/index.js'
