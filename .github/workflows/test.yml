@@ -12,3 +12,4 @@ jobs:
         uses: ./
         with:
           registry: 'https://example.registry'
+          npm-token: 'example-token'

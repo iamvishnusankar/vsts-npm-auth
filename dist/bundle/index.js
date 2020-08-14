@@ -361,31 +361,31 @@ const npmrc_1 = __webpack_require__(168);
 const create_file_1 = __webpack_require__(276);
 const yarnrc_1 = __webpack_require__(31);
 const run = async () => {
-    const registry = core.getInput('registry');
-    const alwaysAuth = core.getInput('always-auth');
-    const authToken = core.getInput('npm-token');
-    if (!registry) {
-        throw new Error('Registry url required: set `registry` variable');
+    try {
+        const registry = core.getInput('registry');
+        const alwaysAuth = core.getInput('always-auth');
+        const authToken = core.getInput('npm-token');
+        if (!registry) {
+            throw new Error('Registry url required: set `registry` variable');
+        }
+        else if (!authToken) {
+            throw new Error('Token required: set `npm-token` variable');
+        }
+        const config = {
+            registry,
+            alwaysAuth,
+            authToken,
+        };
+        const npmrcContent = npmrc_1.getNpmrcContent(config);
+        const yarnrcContent = yarnrc_1.getYarnrcContent(config);
+        await create_file_1.createFile('.npmrc', npmrcContent);
+        await create_file_1.createFile('.yarnrc', yarnrcContent);
     }
-    else if (!authToken) {
-        throw new Error('Token required: set `npm-token` variable');
+    catch (error) {
+        core.setFailed(error.message);
     }
-    const config = {
-        registry,
-        alwaysAuth,
-        authToken,
-    };
-    const npmrcContent = npmrc_1.getNpmrcContent(config);
-    const yarnrcContent = yarnrc_1.getYarnrcContent(config);
-    await create_file_1.createFile('.npmrc', npmrcContent);
-    await create_file_1.createFile('.yarnrc', yarnrcContent);
 };
-try {
-    run();
-}
-catch (error) {
-    core.setFailed(error.message);
-}
+run();
 
 
 /***/ }),
