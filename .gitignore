@@ -64,4 +64,5 @@ typings/
 .DS_Store
 .npmrc
 junit.xml
-dist
+dist/**/*.js
+!dist/bundle/*
