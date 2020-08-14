@@ -1,7 +1,7 @@
 {
   "name": "fullstack-template",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/iamvishnusankar/fullstack-template.git",
   "author": "Vishnu Sankar",
   "license": "MIT",
@@ -27,5 +27,8 @@
   },
   "devDependencies": {
     "@corex/workspace": "^2.3.5"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.4"
   }
 }
