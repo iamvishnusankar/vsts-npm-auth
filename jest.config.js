@@ -7,4 +7,5 @@ module.exports = {
     '!**/node_modules/**',
     '!**/vendor/**',
   ],
+  testPathIgnorePatterns: ['dist', 'node_modules'],
 }

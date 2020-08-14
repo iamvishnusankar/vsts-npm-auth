@@ -1,3 +1,7 @@
-# fullstack-template
+# vsts-npm-auth
 
-Fullstack project template
+vsts-npm-auth
+
+## TODO
+
+- documentation

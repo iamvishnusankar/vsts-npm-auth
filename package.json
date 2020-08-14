@@ -13,6 +13,7 @@
     ]
   },
   "scripts": {
+    "test": "jest --ci",
     "build": "tsc",
     "postbuild": "yarn build:main && yarn build:cleanup",
     "build:main": "ncc build dist/main.js -o dist/bundle/main",
