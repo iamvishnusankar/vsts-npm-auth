@@ -295,11 +295,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = __importDefault(__webpack_require__(186));
-const run = async () => {
-    console.log(core_1.default.getInput('registry'), core_1.default.getInput('always-auth'));
-};
 try {
-    run();
+    console.log(core_1.default.getInput('registry'), core_1.default.getInput('always-auth'));
 }
 catch (error) {
     core_1.default.setFailed(error.message);
