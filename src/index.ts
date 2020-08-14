@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import { getNpmrcContent } from './npmrc'
 import { INpmRcConfig } from './inteface'
 import { createFile } from './create-file'
+import { getYarnrcContent } from './yarnrc'
 
 const run = async () => {
   const registry = core.getInput('registry')
@@ -21,7 +22,10 @@ const run = async () => {
   }
 
   const npmrcContent = getNpmrcContent(config)
+  const yarnrcContent = getYarnrcContent(config)
+
   await createFile('.npmrc', npmrcContent)
+  await createFile('.yarnrc', yarnrcContent)
 }
 
 try {
