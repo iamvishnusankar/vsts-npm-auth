@@ -9,4 +9,4 @@ input:
     default: true
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'dist/bundle/index.js'
