@@ -929,7 +929,7 @@ const file_1 = __webpack_require__(621);
 const cleanup = async () => {
     try {
         await file_1.deleteFile('.npmrc');
-        await file_1.deleteFile('.yarnrc');
+        // await deleteFile('.yarnrc')
     }
     catch (error) {
         core.setFailed(error.message);

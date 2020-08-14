@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import { getNpmrcContent } from './npmrc'
 import { INpmRcConfig } from './inteface'
 import { createFile } from './file'
-import { getYarnrcContent } from './yarnrc'
+// import { getYarnrcContent } from './yarnrc'
 
 const run = async () => {
   try {
@@ -23,10 +23,10 @@ const run = async () => {
     }
 
     const npmrcContent = getNpmrcContent(config)
-    const yarnrcContent = getYarnrcContent(config)
+    // const yarnrcContent = getYarnrcContent(config)
 
     await createFile('.npmrc', npmrcContent)
-    await createFile('.yarnrc', yarnrcContent)
+    // await createFile('.yarnrc', yarnrcContent)
   } catch (error) {
     core.setFailed(error.message)
   }
