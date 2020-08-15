@@ -49,6 +49,29 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
+/***/ 18:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.clearGlobalConfig = exports.setGlobalConfig = exports.toBase64 = void 0;
+const exec_1 = __webpack_require__(514);
+exports.toBase64 = (text) => {
+    return Buffer.from(text.trim()).toString('base64');
+};
+exports.setGlobalConfig = async (config) => {
+    await exec_1.exec('npm', ['config', 'set', 'registry', `"${config.registry}"`]);
+    await exec_1.exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`]);
+};
+exports.clearGlobalConfig = async () => {
+    await exec_1.exec('npm', ['config', 'always-auth', 'registry']);
+    await exec_1.exec('npm', ['config', 'delete', 'registry']);
+};
+
+
+/***/ }),
+
 /***/ 87:
 /***/ (function(module) {
 
@@ -926,10 +949,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const file_1 = __webpack_require__(621);
+const global_1 = __webpack_require__(18);
 const cleanup = async () => {
     try {
+        await global_1.clearGlobalConfig();
         await file_1.deleteFile('.npmrc');
-        await file_1.deleteFile('.yarnrc');
+        //  await deleteFile('.yarnrc')
     }
     catch (error) {
         core.setFailed(error.message);
