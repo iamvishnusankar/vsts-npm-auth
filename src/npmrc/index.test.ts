@@ -3,14 +3,12 @@ import { getNpmrcContent } from './index'
 describe('vsts-npm-auth', () => {
   test('getNpmrcContent', () => {
     const content = getNpmrcContent({
-      registry: 'https://example.com',
+      registry: 'https://example.com/npm',
       alwaysAuth: false,
-      username: 'username',
-      password: 'helloworld',
     })
 
     expect(content).toStrictEqual(
-      `registry=https://example.com\nusername=username\npassword=helloworld\nalways-auth=false`
+      '//example.com/npm/registry/:_authToken=${NPM_TOKEN}\n//example.com/npm/:_authToken=${NPM_TOKEN}'
     )
   })
 })

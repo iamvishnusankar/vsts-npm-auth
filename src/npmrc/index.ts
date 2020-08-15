@@ -1,5 +1,7 @@
 import { INpmRcConfig } from '../inteface'
+import { toVSTSRegistryUrls } from '../util'
 
 export const getNpmrcContent = (config: INpmRcConfig): string => {
-  return `registry=${config.registry}\nusername=${config.username}\npassword=${config.password}\nalways-auth=${config.alwaysAuth}`
+  const vstsUrls = toVSTSRegistryUrls(config.registry)
+  return `${vstsUrls.registry}\n${vstsUrls.npm}`
 }

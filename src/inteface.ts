@@ -1,6 +1,9 @@
 export interface INpmRcConfig {
   registry: string
   alwaysAuth: string | boolean
-  username: string
-  password: string
+}
+
+export interface IVSTSRegistryUrls {
+  registry: string
+  npm: string
 }
