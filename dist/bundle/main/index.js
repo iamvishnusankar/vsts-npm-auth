@@ -57,7 +57,7 @@ module.exports =
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getYarnrcContent = void 0;
 exports.getYarnrcContent = (config) => {
-    return `"registry" "${config.registry}"\n"always-auth" "${config.alwaysAuth}"\n"username" "${config.username}"\n"password" "${config.password}"`;
+    return `registry "${config.registry}"\nalways-auth ${config.alwaysAuth}\n"_username" ${config.username}\n"_password" ${config.password}`;
 };
 
 
@@ -692,7 +692,7 @@ class ExecState extends events.EventEmitter {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNpmrcContent = void 0;
 exports.getNpmrcContent = (config) => {
-    return `registry=${config.registry}\nalways-auth=${config.alwaysAuth}\nusername=${config.username}\npassword=${config.password}`;
+    return `registry=${config.registry}\nalways-auth=${config.alwaysAuth}\n_username=${config.username}\n_password=${config.password}`;
 };
 
 
