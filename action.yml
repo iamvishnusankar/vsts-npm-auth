@@ -1,6 +1,9 @@
 name: 'Setup VSTS Feed'
 description: 'Setup a VSTS Feed and authenticate'
 author: 'iamvishnusankar'
+branding:
+  icon: 'activity'
+  color: 'orange'
 inputs:
   registry:
     description: 'VSTS private feed registry'
