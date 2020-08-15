@@ -13,6 +13,6 @@ export const setGlobalConfig = async (config: INpmRcConfig): Promise<void> => {
 }
 
 export const clearGlobalConfig = async (): Promise<void> => {
-  await exec('npm', ['config', 'always-auth', 'registry'])
+  await exec('npm', ['config', 'delete', 'always-auth'])
   await exec('npm', ['config', 'delete', 'registry'])
 }

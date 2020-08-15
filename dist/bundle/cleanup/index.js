@@ -68,7 +68,7 @@ exports.setGlobalConfig = async (config) => {
     await exec_1.exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`]);
 };
 exports.clearGlobalConfig = async () => {
-    await exec_1.exec('npm', ['config', 'always-auth', 'registry']);
+    await exec_1.exec('npm', ['config', 'delete', 'always-auth']);
     await exec_1.exec('npm', ['config', 'delete', 'registry']);
 };
 
