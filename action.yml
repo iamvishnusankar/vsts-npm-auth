@@ -3,11 +3,11 @@ description: 'Setup a VSTS Feed and authenticate'
 author: 'iamvishnusankar'
 inputs:
   registry:
-    deacription: 'VSTS private feed registry'
+    description: 'VSTS private feed registry'
   username:
-    deacription: 'VSTS username'
-  password:
-    deacription: 'Base64 Encoded password'
+    description: 'VSTS private feed username'
+  token:
+    description: 'VSTS PAT'
   always-auth:
     description: 'Set always-auth in npmrc'
     default: true

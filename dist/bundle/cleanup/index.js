@@ -49,6 +49,32 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
+/***/ 18:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.clearGlobalConfig = exports.setGlobalConfig = void 0;
+const exec_1 = __webpack_require__(514);
+const util_1 = __webpack_require__(791);
+exports.setGlobalConfig = async (config) => {
+    await exec_1.exec('npm', [
+        'config',
+        'set',
+        'registry',
+        `"${util_1.cleanUrl(config.registry)}"`,
+    ]);
+    await exec_1.exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`]);
+};
+exports.clearGlobalConfig = async () => {
+    await exec_1.exec('npm', ['config', 'delete', 'always-auth']);
+    await exec_1.exec('npm', ['config', 'delete', 'registry']);
+};
+
+
+/***/ }),
+
 /***/ 87:
 /***/ (function(module) {
 
@@ -926,10 +952,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const file_1 = __webpack_require__(621);
+const global_1 = __webpack_require__(18);
 const cleanup = async () => {
     try {
+        await global_1.clearGlobalConfig();
         await file_1.deleteFile('.npmrc');
-        await file_1.deleteFile('.yarnrc');
+        //  await deleteFile('.yarnrc')
     }
     catch (error) {
         core.setFailed(error.message);
@@ -1441,6 +1469,54 @@ module.exports = require("util");
 /***/ (function(module) {
 
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ 791:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.toVSTSRegistryUrls = exports.toBase64 = exports.getBaseUrl = exports.cleanUrl = void 0;
+exports.cleanUrl = (url) => {
+    return `${url}/`.replace(/([^:])(\/\/+)/g, '$1/');
+};
+exports.getBaseUrl = (url) => {
+    return exports.cleanUrl(url).replace('/npm/registry', '/npm').slice(6);
+};
+exports.toBase64 = (text) => {
+    return Buffer.from(text.trim()).toString('base64');
+};
+exports.toVSTSRegistryUrls = (config) => {
+    const baseUrl = exports.getBaseUrl(config.registry);
+    const base64Password = exports.toBase64(config.token);
+    const registryKeys = [
+        {
+            key: `${baseUrl}registry/:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}registry/:_password`,
+            value: base64Password,
+        },
+    ];
+    const npmKeys = [
+        {
+            key: `${baseUrl}:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}:_password`,
+            value: base64Password,
+        },
+    ];
+    return {
+        registryKeys,
+        npmKeys,
+    };
+};
+
 
 /***/ }),
 

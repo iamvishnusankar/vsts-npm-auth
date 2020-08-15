@@ -49,15 +49,27 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ 31:
-/***/ (function(__unusedmodule, exports) {
+/***/ 18:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getYarnrcContent = void 0;
-exports.getYarnrcContent = (config) => {
-    return `"registry" "${config.registry}"\n"always-auth" "${config.alwaysAuth}"\n"username" "${config.username}"\n"password" "${config.password}"`;
+exports.clearGlobalConfig = exports.setGlobalConfig = void 0;
+const exec_1 = __webpack_require__(514);
+const util_1 = __webpack_require__(791);
+exports.setGlobalConfig = async (config) => {
+    await exec_1.exec('npm', [
+        'config',
+        'set',
+        'registry',
+        `"${util_1.cleanUrl(config.registry)}"`,
+    ]);
+    await exec_1.exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`]);
+};
+exports.clearGlobalConfig = async () => {
+    await exec_1.exec('npm', ['config', 'delete', 'always-auth']);
+    await exec_1.exec('npm', ['config', 'delete', 'registry']);
 };
 
 
@@ -685,14 +697,23 @@ class ExecState extends events.EventEmitter {
 /***/ }),
 
 /***/ 168:
-/***/ (function(__unusedmodule, exports) {
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNpmrcContent = void 0;
+const util_1 = __webpack_require__(791);
 exports.getNpmrcContent = (config) => {
-    return `registry=${config.registry}\nalways-auth=${config.alwaysAuth}\nusername=${config.username}\npassword=${config.password}`;
+    const vstsUrls = util_1.toVSTSRegistryUrls(config);
+    let content = '';
+    for (const k of vstsUrls.registryKeys) {
+        content += `${k.key}=${k.value}\n`;
+    }
+    for (const k of vstsUrls.npmKeys) {
+        content += `${k.key}=${k.value}\n`;
+    }
+    return content.trim();
 };
 
 
@@ -1358,32 +1379,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const npmrc_1 = __webpack_require__(168);
 const file_1 = __webpack_require__(621);
-const yarnrc_1 = __webpack_require__(31);
+// import { getYarnrcContent } from './yarnrc'
+const global_1 = __webpack_require__(18);
 const run = async () => {
     try {
         const registry = core.getInput('registry');
         const alwaysAuth = core.getInput('always-auth');
         const username = core.getInput('username');
-        const password = core.getInput('password');
+        const token = core.getInput('token');
         if (!registry) {
             throw new Error('Registry url required: set `registry` variable');
-        }
-        else if (!username) {
-            throw new Error('Username required: set `npm-token` variable');
-        }
-        else if (!password) {
-            throw new Error('Base64 Encoded password required');
         }
         const config = {
             registry,
             alwaysAuth,
             username,
-            password,
+            token,
         };
+        await global_1.setGlobalConfig(config);
         const npmrcContent = npmrc_1.getNpmrcContent(config);
-        const yarnrcContent = yarnrc_1.getYarnrcContent(config);
+        //  const yarnrcContent = getYarnrcContent(config)
         await file_1.createFile('.npmrc', npmrcContent);
-        await file_1.createFile('.yarnrc', yarnrcContent);
+        // await createFile('.yarnrc', yarnrcContent)
     }
     catch (error) {
         core.setFailed(error.message);
@@ -1492,6 +1509,54 @@ module.exports = require("util");
 /***/ (function(module) {
 
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ 791:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.toVSTSRegistryUrls = exports.toBase64 = exports.getBaseUrl = exports.cleanUrl = void 0;
+exports.cleanUrl = (url) => {
+    return `${url}/`.replace(/([^:])(\/\/+)/g, '$1/');
+};
+exports.getBaseUrl = (url) => {
+    return exports.cleanUrl(url).replace('/npm/registry', '/npm').slice(6);
+};
+exports.toBase64 = (text) => {
+    return Buffer.from(text.trim()).toString('base64');
+};
+exports.toVSTSRegistryUrls = (config) => {
+    const baseUrl = exports.getBaseUrl(config.registry);
+    const base64Password = exports.toBase64(config.token);
+    const registryKeys = [
+        {
+            key: `${baseUrl}registry/:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}registry/:_password`,
+            value: base64Password,
+        },
+    ];
+    const npmKeys = [
+        {
+            key: `${baseUrl}:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}:_password`,
+            value: base64Password,
+        },
+    ];
+    return {
+        registryKeys,
+        npmKeys,
+    };
+};
+
 
 /***/ }),
 
