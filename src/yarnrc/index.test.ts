@@ -9,6 +9,8 @@ describe('vsts-npm-auth', () => {
       password: 'pass',
     })
 
-    expect(content).toStrictEqual(`registry "https://example.com"`)
+    expect(content).toStrictEqual(
+      `"registry" "https://example.com"\n"always-auth" "false"\n"username" "123"\n"password" "pass"`
+    )
   })
 })
