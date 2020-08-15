@@ -57,7 +57,7 @@ module.exports =
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getYarnrcContent = void 0;
 exports.getYarnrcContent = (config) => {
-    return `registry "${config.registry}"\nalways-auth "${config.alwaysAuth}"\nusername "${config.username}"\npassword "${config.password}"`;
+    return `registry "${config.registry}"\nalways-auth ${config.alwaysAuth}\nusername ${config.username}\npassword ${config.password}`;
 };
 
 

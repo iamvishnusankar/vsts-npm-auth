@@ -10,7 +10,7 @@ describe('vsts-npm-auth', () => {
     })
 
     expect(content).toStrictEqual(
-      `registry "https://example.com"\nalways-auth "false"\nusername "123"\npassword "pass"`
+      `registry "https://example.com"\nalways-auth false\nusername 123\npassword pass`
     )
   })
 })
