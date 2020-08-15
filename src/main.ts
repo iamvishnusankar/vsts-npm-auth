@@ -8,18 +8,22 @@ const run = async () => {
   try {
     const registry = core.getInput('registry')
     const alwaysAuth = core.getInput('always-auth')
-    const authToken = core.getInput('npm-token')
+    const username = core.getInput('username')
+    const password = core.getInput('password')
 
     if (!registry) {
       throw new Error('Registry url required: set `registry` variable')
-    } else if (!authToken) {
-      throw new Error('Token required: set `npm-token` variable')
+    } else if (!username) {
+      throw new Error('Username required: set `npm-token` variable')
+    } else if (!password) {
+      throw new Error('Base64 Encoded password required')
     }
 
     const config: INpmRcConfig = {
       registry,
       alwaysAuth,
-      authToken,
+      username,
+      password,
     }
 
     const npmrcContent = getNpmrcContent(config)

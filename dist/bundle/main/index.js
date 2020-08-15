@@ -678,7 +678,7 @@ class ExecState extends events.EventEmitter {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNpmrcContent = void 0;
 exports.getNpmrcContent = (config) => {
-    return `registry=${config.registry}\nauthToken=${config.authToken}\nalways-auth=${config.alwaysAuth}`;
+    return `registry=${config.registry}\nalways-auth=${config.alwaysAuth}\nusername=${config.username}\npassword=${config.password}`;
 };
 
 
@@ -1349,17 +1349,22 @@ const run = async () => {
     try {
         const registry = core.getInput('registry');
         const alwaysAuth = core.getInput('always-auth');
-        const authToken = core.getInput('npm-token');
+        const username = core.getInput('username');
+        const password = core.getInput('password');
         if (!registry) {
             throw new Error('Registry url required: set `registry` variable');
         }
-        else if (!authToken) {
-            throw new Error('Token required: set `npm-token` variable');
+        else if (!username) {
+            throw new Error('Username required: set `npm-token` variable');
+        }
+        else if (!password) {
+            throw new Error('Base64 Encoded password required');
         }
         const config = {
             registry,
             alwaysAuth,
-            authToken,
+            username,
+            password,
         };
         const npmrcContent = npmrc_1.getNpmrcContent(config);
         // const yarnrcContent = getYarnrcContent(config)

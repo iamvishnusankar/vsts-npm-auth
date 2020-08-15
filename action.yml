@@ -4,8 +4,10 @@ author: 'iamvishnusankar'
 inputs:
   registry:
     deacription: 'VSTS private feed registry'
-  npm-token:
-    deacription: 'VSTS PAT'
+  username:
+    deacription: 'VSTS username'
+  password:
+    deacription: 'Base64 Encoded password'
   always-auth:
     description: 'Set always-auth in npmrc'
     default: true

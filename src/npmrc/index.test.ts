@@ -5,11 +5,12 @@ describe('vsts-npm-auth', () => {
     const content = getNpmrcContent({
       registry: 'https://example.com',
       alwaysAuth: false,
-      authToken: '123',
+      username: 'username',
+      password: 'helloworld',
     })
 
     expect(content).toStrictEqual(
-      `registry=https://example.com\nauthToken=123\nalways-auth=false`
+      `registry=https://example.com\nalways-auth=false\nusername=username\npassword=helloworld`
     )
   })
 })
