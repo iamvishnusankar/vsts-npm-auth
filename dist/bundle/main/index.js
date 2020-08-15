@@ -49,6 +49,20 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
+/***/ 31:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getYarnrcContent = void 0;
+exports.getYarnrcContent = (config) => {
+    return `registry "${config.registry}"`;
+};
+
+
+/***/ }),
+
 /***/ 87:
 /***/ (function(module) {
 
@@ -1344,7 +1358,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(186));
 const npmrc_1 = __webpack_require__(168);
 const file_1 = __webpack_require__(621);
-// import { getYarnrcContent } from './yarnrc'
+const yarnrc_1 = __webpack_require__(31);
 const run = async () => {
     try {
         const registry = core.getInput('registry');
@@ -1367,9 +1381,9 @@ const run = async () => {
             password,
         };
         const npmrcContent = npmrc_1.getNpmrcContent(config);
-        // const yarnrcContent = getYarnrcContent(config)
+        const yarnrcContent = yarnrc_1.getYarnrcContent(config);
         await file_1.createFile('.npmrc', npmrcContent);
-        // await createFile('.yarnrc', yarnrcContent)
+        await file_1.createFile('.yarnrc', yarnrcContent);
     }
     catch (error) {
         core.setFailed(error.message);
