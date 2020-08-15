@@ -1,8 +1,14 @@
 import { exec } from '@actions/exec'
 import { INpmRcConfig } from '../inteface'
+import { cleanUrl } from '../util'
 
 export const setGlobalConfig = async (config: INpmRcConfig): Promise<void> => {
-  await exec('npm', ['config', 'set', 'registry', `"${config.registry}"`])
+  await exec('npm', [
+    'config',
+    'set',
+    'registry',
+    `"${cleanUrl(config.registry)}"`,
+  ])
   await exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`])
 }
 

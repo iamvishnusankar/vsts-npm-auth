@@ -55,13 +55,16 @@ module.exports =
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearGlobalConfig = exports.setGlobalConfig = exports.toBase64 = void 0;
+exports.clearGlobalConfig = exports.setGlobalConfig = void 0;
 const exec_1 = __webpack_require__(514);
-exports.toBase64 = (text) => {
-    return Buffer.from(text.trim()).toString('base64');
-};
+const util_1 = __webpack_require__(791);
 exports.setGlobalConfig = async (config) => {
-    await exec_1.exec('npm', ['config', 'set', 'registry', `"${config.registry}"`]);
+    await exec_1.exec('npm', [
+        'config',
+        'set',
+        'registry',
+        `"${util_1.cleanUrl(config.registry)}"`,
+    ]);
     await exec_1.exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`]);
 };
 exports.clearGlobalConfig = async () => {
@@ -1466,6 +1469,54 @@ module.exports = require("util");
 /***/ (function(module) {
 
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ 791:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.toVSTSRegistryUrls = exports.toBase64 = exports.getBaseUrl = exports.cleanUrl = void 0;
+exports.cleanUrl = (url) => {
+    return `${url}/`.replace(/([^:])(\/\/+)/g, '$1/');
+};
+exports.getBaseUrl = (url) => {
+    return exports.cleanUrl(url).replace('/npm/registry', '/npm').slice(6);
+};
+exports.toBase64 = (text) => {
+    return Buffer.from(text.trim()).toString('base64');
+};
+exports.toVSTSRegistryUrls = (config) => {
+    const baseUrl = exports.getBaseUrl(config.registry);
+    const base64Password = exports.toBase64(config.token);
+    const registryKeys = [
+        {
+            key: `${baseUrl}registry/:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}registry/:_password`,
+            value: base64Password,
+        },
+    ];
+    const npmKeys = [
+        {
+            key: `${baseUrl}:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}:_password`,
+            value: base64Password,
+        },
+    ];
+    return {
+        registryKeys,
+        npmKeys,
+    };
+};
+
 
 /***/ }),
 

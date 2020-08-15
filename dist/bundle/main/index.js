@@ -55,13 +55,16 @@ module.exports =
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearGlobalConfig = exports.setGlobalConfig = exports.toBase64 = void 0;
+exports.clearGlobalConfig = exports.setGlobalConfig = void 0;
 const exec_1 = __webpack_require__(514);
-exports.toBase64 = (text) => {
-    return Buffer.from(text.trim()).toString('base64');
-};
+const util_1 = __webpack_require__(791);
 exports.setGlobalConfig = async (config) => {
-    await exec_1.exec('npm', ['config', 'set', 'registry', `"${config.registry}"`]);
+    await exec_1.exec('npm', [
+        'config',
+        'set',
+        'registry',
+        `"${util_1.cleanUrl(config.registry)}"`,
+    ]);
     await exec_1.exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`]);
 };
 exports.clearGlobalConfig = async () => {
@@ -702,8 +705,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNpmrcContent = void 0;
 const util_1 = __webpack_require__(791);
 exports.getNpmrcContent = (config) => {
-    const vstsUrls = util_1.toVSTSRegistryUrls(config.registry);
-    return `${vstsUrls.registry}\n${vstsUrls.npm}`;
+    const vstsUrls = util_1.toVSTSRegistryUrls(config);
+    let content = '';
+    for (const k of vstsUrls.registryKeys) {
+        content += `${k.key}=${k.value}\n`;
+    }
+    for (const k of vstsUrls.npmKeys) {
+        content += `${k.key}=${k.value}\n`;
+    }
+    return content.trim();
 };
 
 
@@ -1375,12 +1385,16 @@ const run = async () => {
     try {
         const registry = core.getInput('registry');
         const alwaysAuth = core.getInput('always-auth');
+        const username = core.getInput('username');
+        const token = core.getInput('token');
         if (!registry) {
             throw new Error('Registry url required: set `registry` variable');
         }
         const config = {
             registry,
             alwaysAuth,
+            username,
+            token,
         };
         await global_1.setGlobalConfig(config);
         const npmrcContent = npmrc_1.getNpmrcContent(config);
@@ -1504,18 +1518,42 @@ module.exports = require("fs");
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toVSTSRegistryUrls = exports.getBaseUrl = void 0;
-exports.getBaseUrl = (url) => {
-    const cleanUrl = `${url}/`.replace(/([^:])(\/\/+)/g, '$1/');
-    return cleanUrl.replace('/npm/registry', '/npm').slice(6);
+exports.toVSTSRegistryUrls = exports.toBase64 = exports.getBaseUrl = exports.cleanUrl = void 0;
+exports.cleanUrl = (url) => {
+    return `${url}/`.replace(/([^:])(\/\/+)/g, '$1/');
 };
-exports.toVSTSRegistryUrls = (url) => {
-    const baseUrl = exports.getBaseUrl(url);
-    const registry = `${baseUrl}registry/:_authToken=\${NPM_TOKEN}`;
-    const npm = `${baseUrl}:_authToken=\${NPM_TOKEN}`;
+exports.getBaseUrl = (url) => {
+    return exports.cleanUrl(url).replace('/npm/registry', '/npm').slice(6);
+};
+exports.toBase64 = (text) => {
+    return Buffer.from(text.trim()).toString('base64');
+};
+exports.toVSTSRegistryUrls = (config) => {
+    const baseUrl = exports.getBaseUrl(config.registry);
+    const base64Password = exports.toBase64(config.token);
+    const registryKeys = [
+        {
+            key: `${baseUrl}registry/:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}registry/:_password`,
+            value: base64Password,
+        },
+    ];
+    const npmKeys = [
+        {
+            key: `${baseUrl}:username`,
+            value: config.username,
+        },
+        {
+            key: `${baseUrl}:_password`,
+            value: base64Password,
+        },
+    ];
     return {
-        registry,
-        npm,
+        registryKeys,
+        npmKeys,
     };
 };
 
