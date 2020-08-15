@@ -5,6 +5,8 @@ describe('vsts-npm-auth', () => {
     const content = getNpmrcContent({
       registry: 'https://example.com/npm',
       alwaysAuth: false,
+      username: 'hello',
+      token: 'world',
     })
 
     expect(content).toStrictEqual(

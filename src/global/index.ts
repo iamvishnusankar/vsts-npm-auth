@@ -1,10 +1,6 @@
 import { exec } from '@actions/exec'
 import { INpmRcConfig } from '../inteface'
 
-export const toBase64 = (text: string): string => {
-  return Buffer.from(text.trim()).toString('base64')
-}
-
 export const setGlobalConfig = async (config: INpmRcConfig): Promise<void> => {
   await exec('npm', ['config', 'set', 'registry', `"${config.registry}"`])
   await exec('npm', ['config', 'set', 'always-auth', `"${config.alwaysAuth}"`])

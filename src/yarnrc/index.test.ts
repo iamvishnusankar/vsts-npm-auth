@@ -5,6 +5,8 @@ describe('vsts-npm-auth', () => {
     const content = getYarnrcContent({
       registry: 'https://example.com',
       alwaysAuth: false,
+      username: 'hello',
+      token: 'world',
     })
 
     expect(content).toStrictEqual(

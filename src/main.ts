@@ -9,6 +9,8 @@ const run = async () => {
   try {
     const registry = core.getInput('registry')
     const alwaysAuth = core.getInput('always-auth')
+    const username = core.getInput('username')
+    const token = core.getInput('token')
 
     if (!registry) {
       throw new Error('Registry url required: set `registry` variable')
@@ -17,6 +19,8 @@ const run = async () => {
     const config: INpmRcConfig = {
       registry,
       alwaysAuth,
+      username,
+      token,
     }
 
     await setGlobalConfig(config)
