@@ -1,0 +1,23 @@
+name: 1.1$(rev:.r)
+trigger:
+  branches:
+    include:
+      - master
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  # Github Release
+  - task: GitHubRelease@1
+    displayName: Github Release
+    inputs:
+      gitHubConnection: 'iamvishnusankar'
+      repositoryName: '$(Build.Repository.Name)'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'userSpecifiedTag'
+      tag: 'v$(Build.BuildNumber)'
+      changeLogCompareToRelease: 'lastFullRelease'
+      changeLogType: 'commitBased'
