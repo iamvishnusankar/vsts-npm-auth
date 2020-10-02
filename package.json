@@ -31,11 +31,11 @@
     "format": "prettier --write \"**/*.{js,mjs,cjs,jsx,json,ts,tsx,md,mdx,css,html,yml,yaml,scss,less,graphql,graphqls,gql}\""
   },
   "devDependencies": {
-    "@corex/workspace": "^2.3.5",
-    "@vercel/ncc": "^0.23.0"
+    "@corex/workspace": "^2.4.14",
+    "@vercel/ncc": "^0.24.1"
   },
   "dependencies": {
-    "@actions/core": "^1.2.4",
+    "@actions/core": "^1.2.6",
     "@actions/exec": "^1.0.4"
   }
 }
